@@ -1,60 +1,78 @@
+const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const path = require('path');
+
+const moment = require('moment');
+const $hash = moment( new Date() ).format( 'DD_MM_YYYY__hh_mm' );
 
 module.exports = env => {
 		const ifProd = plugin =>  env.prod ? plugin : undefined;
 		const removeEmpty = array => array.filter(p => !!p);
 
 		return {
-				/**
-				 * entry tells webpack where to start looking.
-				 * In this case we have both an app and vendor file.
-				 */
+				devtool: 'source-map',
+
 				entry: {
 						app: path.join(__dirname, '../src/'),
 						vendor: ['react', 'react-dom', 'react-router'],
 				},
-				/**
-				 * output tells webpack where to put the files he creates
-				 * after running all its loaders and plugins.
-				 *
-				 * > [name].[hash].js will output something like app.3531f6aad069a0e8dc0e.js
-				 * > path.join(__dirname, '../build/') will output into a /build folder in
-				 *   the root of this prject.
-				 */
+
 				output: {
-						filename: '[name].[hash].js',
+						filename: `[name].${ $hash }.js`,
 						path: path.join(__dirname, '../build/'),
 				},
 
 				module: {
-						// Loaders allow you to preprocess files!
 						rules: [
 								{
 										test: /\.js$/,
-										exclude: /(node_modules|bower_components)/,
+										exclude: /(node_modules)/,
 										use: {
 												loader: 'babel-loader',
 												options: {
-														presets: ['env']
+														plugins: [
+																"transform-object-assign",
+																"transform-decorators-legacy",
+																"transform-class-properties",
+																"transform-runtime"
+														]
 												}
 										}
-								}
+								},
+
+								{
+										test: /\.css$/,
+										use: [
+												"style-loader",
+												{ loader: "css-loader", options: { modules: true } }
+										]
+								},
+
+								{
+										test: /\.html/,
+										use: 'raw-loader'
+								},
+
+								{
+										test: /\.(ttf|eot|svg|gif|jpg|png|mp3)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+										loader: 'file-loader?name=assets/[name]_[hash].[ext]'
+								},
+
+								{
+										test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+										loader: 'url-loader?name=assets/[name]_[hash].[ext]&limit=10000&mimetype=application/font-woff'
+								},
 						],
 				},
 
 				plugins: removeEmpty([
+
 						new webpack.optimize.CommonsChunkPlugin({
 								name: 'vendor',
 								minChunks: Infinity,
-								filename: '[name].[hash].js',
+								filename: `[name].${ $hash }.js`,
 						}),
 
-						/**
-						 * HtmlWebpackPlugin will make sure out JavaScript files are being called
-						 * from within our index.html
-						 */
 						new HtmlWebpackPlugin({
 								template: path.join(__dirname, '../src/index.html'),
 								filename: 'index.html',
