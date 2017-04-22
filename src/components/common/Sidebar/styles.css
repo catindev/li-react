@@ -1,14 +1,10 @@
-/*
- * Sidebar
- */
-
 .sidebar {
     position: fixed;
     top: 0;
     left: 0;
     padding: 0;
     overflow-x: hidden;
-    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+    overflow-y: auto;
     border-right: 1px solid #eee;
     height: 100%;
 }

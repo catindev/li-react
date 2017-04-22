@@ -18,20 +18,19 @@ export default [
 		{
 				path: '/',
 				exact: true,
-				component: () => <Home/>,
 				sidebar: true,
-				title: 'Home page'
+				title: 'Home page',
+				component: () => <Home/>
 		},
 		{
 				path: '/about',
-				component: () => <About/>,
 				sidebar: true,
-				title: 'About page'
+				title: 'About page',
+				component: () => <About/>,
 		},
 		{
 				path: '/users',
+				title: 'Users page',
 				component: () => <Users/>,
-				sidebar: false,
-				title: 'Users page'
 		}
 ];

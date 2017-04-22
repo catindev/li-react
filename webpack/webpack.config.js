@@ -44,23 +44,21 @@ module.exports = env => {
 										test: /\.css$/,
 										use: [
 												"style-loader",
-												{ loader: "css-loader", options: { modules: true } }
+												{
+														loader: "css-loader",
+														options: { modules: true }
+												}
 										]
 								},
 
 								{
-										test: /\.html/,
-										use: 'raw-loader'
-								},
-
-								{
 										test: /\.(ttf|eot|svg|gif|jpg|png|mp3)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-										loader: 'file-loader?name=assets/[name]_[hash].[ext]'
+										loader: `file-loader?name=assets/[name]-${ $hash }.[ext]`
 								},
 
 								{
 										test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-										loader: 'url-loader?name=assets/[name]_[hash].[ext]&limit=10000&mimetype=application/font-woff'
+										loader: `url-loader?name=assets/[name]-${ $hash }.[ext]&limit=10000&mimetype=application/font-woff`
 								},
 						],
 				},
