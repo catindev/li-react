@@ -12,9 +12,9 @@ const path = require('path');
 const env = { dev: process.env.NODE_ENV };
 
 const devServerConfig = {
-		contentBase: path.join(__dirname, '../../src/'),
-		// Need historyApiFallback to be able to refresh on dynamic route
-		historyApiFallback: { disableDotRule: true },
+  contentBase: path.join(__dirname, '../../src/'),
+  // Need historyApiFallback to be able to refresh on dynamic route
+  historyApiFallback: { disableDotRule: true },
 };
 
 /**
@@ -22,7 +22,10 @@ const devServerConfig = {
  * that we will setup at webpack/webpack.config.js. We are also passing in
  * the server configuration object that we created above.
  */
-const server = new WebpackDevServer(webpack(webpackConfig(env)), devServerConfig);
+const server = new WebpackDevServer(
+  webpack(webpackConfig(env)),
+  devServerConfig
+);
 
 // will be live at http://localhost:3000/
 server.listen(3000, 'localhost');
